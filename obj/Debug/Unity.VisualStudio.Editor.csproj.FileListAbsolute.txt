@@ -1,0 +1,2 @@
+C:\Dev\dialog nodes editor\obj\Debug\Unity.VisualStudio.Editor.csproj.AssemblyReference.cache
+C:\Dev\dialog nodes editor\obj\Debug\Unity.VisualStudio.Editor.csproj.CoreCompileInputs.cache
