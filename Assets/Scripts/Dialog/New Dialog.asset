@@ -1,0 +1,147 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-2459067802457544165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79c90fa550eee194e8fd7b6a96523858, type: 3}
+  m_Name: c259cca9-eecf-4139-9ef9-5c133e91be0d
+  m_EditorClassIdentifier: 
+  isRoot: 0
+  speaker: 
+  header: 
+  outerChoices: []
+  effectorsAndEffects: []
+  rect:
+    serializedVersion: 2
+    x: 294
+    y: 206
+    width: 240
+    height: 210
+  costOrBenefits: []
+--- !u!114 &-1991033410726569491
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79c90fa550eee194e8fd7b6a96523858, type: 3}
+  m_Name: a142a04d-abd0-4296-b26c-9e8f746194e2
+  m_EditorClassIdentifier: 
+  isRoot: 0
+  speaker: 
+  header: 
+  outerChoices: []
+  effectorsAndEffects: []
+  rect:
+    serializedVersion: 2
+    x: 531
+    y: 102
+    width: 240
+    height: 210
+  costOrBenefits: []
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 097525fce8ec3d949a9e90cd2cbbda9f, type: 3}
+  m_Name: New Dialog
+  m_EditorClassIdentifier: 
+  nodes:
+  - {fileID: 8843561055572469961}
+  - {fileID: 1415582973806924525}
+  - {fileID: -1991033410726569491}
+  - {fileID: -2459067802457544165}
+  speakers:
+  - omer
+  - sosa
+  - 
+--- !u!114 &1415582973806924525
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79c90fa550eee194e8fd7b6a96523858, type: 3}
+  m_Name: 1d12dbeb-e2c8-4df5-9798-25dac28acf7f
+  m_EditorClassIdentifier: 
+  isRoot: 0
+  speaker: 
+  header: 
+  outerChoices: []
+  effectorsAndEffects: []
+  rect:
+    serializedVersion: 2
+    x: 304
+    y: -31
+    width: 240
+    height: 210
+  costOrBenefits: []
+--- !u!114 &8843561055572469961
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79c90fa550eee194e8fd7b6a96523858, type: 3}
+  m_Name: cd94fb7e-3e8f-49e8-a261-5ac5dd5d1126
+  m_EditorClassIdentifier: 
+  isRoot: 1
+  speaker: sosa
+  header: This is the speaker's dialog line
+  outerChoices:
+  - childUniqueID: 1d12dbeb-e2c8-4df5-9798-25dac28acf7f
+    innerChoices:
+      innerChoices:
+      - This is the first inner choice
+      - in the first outer choice
+      - inners are selected randomly
+    chanceOfShowing: 1
+    visibility: 1
+  - childUniqueID: a142a04d-abd0-4296-b26c-9e8f746194e2
+    innerChoices:
+      innerChoices:
+      - this is the second outer choice
+      - outer choices are selected
+      - according to traits and items
+    chanceOfShowing: 1
+    visibility: 1
+  - childUniqueID: c259cca9-eecf-4139-9ef9-5c133e91be0d
+    innerChoices:
+      innerChoices:
+      - 'could have many outer choices
+
+'
+      - max three are shown to player
+    chanceOfShowing: 1
+    visibility: 1
+  effectorsAndEffects:
+  - effector: {fileID: 0}
+    choiceIfTrue: 0
+    choiceIfFalse: 0
+  rect:
+    serializedVersion: 2
+    x: 60
+    y: -189
+    width: 240
+    height: 546
+  costOrBenefits: []
