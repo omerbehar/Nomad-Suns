@@ -245,7 +245,8 @@ namespace Nomad.Dialog.Editor
             DrawNodeMenu(node);
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("Speaker:");
-            node.SetSpeaker(selectedDialog.GetSpeakerAtIndex(EditorGUILayout.Popup(selectedDialog.GetSpeakerIndex(node.GetSpeaker()), selectedDialog.GetSpeakers().ToArray())));
+            string newSpeaker = selectedDialog.GetSpeakers().Count != 0 ? selectedDialog.GetSpeakerAtIndex(EditorGUILayout.Popup(selectedDialog.GetSpeakerIndex(node.GetSpeaker()), selectedDialog.GetSpeakers().ToArray())) : "";
+            node.SetSpeaker(newSpeaker);
             EditorGUILayout.EndHorizontal();
             string newHeader = node.GetHeader();
             string buttonName = newHeader != null && newHeader != "" ? newHeader : "Add Choice";
@@ -278,7 +279,7 @@ namespace Nomad.Dialog.Editor
             }
             EditorGUILayout.EndHorizontal();
             Rect tempRect = GUILayoutUtility.GetLastRect();
-            //lastRects.Add(new Rect());
+            if (lastRects.Count == index) lastRects.Add(new Rect());
             if (Event.current.type == EventType.Repaint)
             {
                 lastRects[index] = tempRect;

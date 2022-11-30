@@ -56,6 +56,7 @@ namespace Nomad.Dialog
             DialogNode newNode = CreateInstance<DialogNode>();
             newNode.name = Guid.NewGuid().ToString();
             Undo.RegisterCreatedObjectUndo(newNode, "Created dialog node");
+            newNode.SetSpeaker(speakers[0]);
             newNode.SetRect(new Rect(parentNode.GetRect().xMax + 50, parentNode.GetRect().y, newNode.GetRect().size.x, newNode.GetRect().size.y));
             Undo.RecordObject(parentNode, "Adding new node as a child to parent node");
             parentNode.AddOuterChoice(newNode.name);
@@ -100,6 +101,7 @@ namespace Nomad.Dialog
             {
                 DialogNode rootNode = CreateInstance<DialogNode>();
                 speakers.Add("");
+                rootNode.SetSpeaker("");
                 rootNode.name = Guid.NewGuid().ToString();
                 rootNode.IsRoot(true);
                 nodes.Add(rootNode);
@@ -149,7 +151,9 @@ namespace Nomad.Dialog
 
         public int GetSpeakerIndex(string speaker)
         {
-            return speakers.IndexOf(speaker);
+            int result = speakers.IndexOf(speaker);
+            result = result == -1 ? 0 : result;
+            return result;
         }
 
         public string GetSpeakerAtIndex(int index)
