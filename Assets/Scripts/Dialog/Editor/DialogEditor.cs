@@ -247,9 +247,6 @@ namespace Nomad.Dialog.Editor
             GUILayout.Label("Speaker:");
             node.SetSpeaker(selectedDialog.GetSpeakerAtIndex(EditorGUILayout.Popup(selectedDialog.GetSpeakerIndex(node.GetSpeaker()), selectedDialog.GetSpeakers().ToArray())));
             EditorGUILayout.EndHorizontal();
-
-            //string newHeader = EditorGUILayout.TextField(node.GetHeader());
-            //node.SetHeader(newHeader);
             string newHeader = node.GetHeader();
             string buttonName = newHeader != null && newHeader != "" ? newHeader : "Add Choice";
             GUIStyle buttonStyle = new GUIStyle(GUI.skin.button);
@@ -482,7 +479,7 @@ namespace Nomad.Dialog.Editor
         }
         private void DrawEffector(DialogNode node, int effectorIndex, int nodeIndex, Rect effectorBtnRect)
         {
-            float height = node.GetIsRoot() ? GetAllOuterChoicesSize(nodeIndex) + 120 : GetAllOuterChoicesSize(nodeIndex) + 120;
+            float height = node.GetIsRoot() ? GetAllOuterChoicesSize(nodeIndex) + 140 : GetAllOuterChoicesSize(nodeIndex) + 140;
             effectorRect[nodeIndex][effectorIndex] = new Rect(nodeStyle.border.left,
                 (node.GetIsRoot() ? 0 : 20) + (effectorAreaHeight * effectorIndex) + height,
                 node.GetRect().width - 2 * effectorRect[nodeIndex][effectorIndex].x,
