@@ -13,6 +13,7 @@ namespace Nomad.Dialog.Editor
         private DialogNode parentNode;
         private int outerChoiceIndex;
         private int innerChoiceIndex;
+        private bool focused;
 
         public static void ShowEditorWindow()
         {
@@ -44,7 +45,15 @@ namespace Nomad.Dialog.Editor
             else
             {
                 EditorGUILayout.LabelField("Choice selected:");
+                GUI.SetNextControlName("text");
                 selectedChoice = EditorGUILayout.TextArea(selectedChoice, GUILayout.Height(120));
+                if (!focused)
+                {
+                    GUI.FocusControl("text");
+                    TextEditor textEditor = (TextEditor)GUIUtility.GetStateObject(typeof(TextEditor), GUIUtility.keyboardControl);
+                    textEditor.cursorIndex = 1;
+                    focused = true;
+                }
                 if (outerChoiceIndex != -1)
                 {
                     parentNode.GetOuterChoiceAtIndex(outerChoiceIndex).SetInnerChoiceAtIndex(innerChoiceIndex, selectedChoice);

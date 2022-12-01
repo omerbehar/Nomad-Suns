@@ -56,26 +56,25 @@
     <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Unity UI Samples\Scripts\ResizePanel.cs" />
+    <Compile Include="Assets\Unity UI Samples\Scripts\DragPanel.cs" />
     <Compile Include="Assets\Scripts\Dialog\Choice.cs" />
     <Compile Include="Assets\Effectors\Trait.cs" />
-    <Compile Include="Assets\Scripts\Dialog\CostOrBenefit.cs" />
     <Compile Include="Assets\Scripts\Dialog\Dialog.cs" />
+    <Compile Include="Assets\Unity UI Samples\Scripts\PanelManager.cs" />
+    <Compile Include="Assets\Unity UI Samples\Scripts\ApplicationManager.cs" />
     <Compile Include="Assets\Scripts\Dialog\DialogNode.cs" />
+    <Compile Include="Assets\Scripts\UI\DialogUI.cs" />
+    <Compile Include="Assets\Unity UI Samples\Scripts\ActiveStateToggler.cs" />
+    <Compile Include="Assets\Unity UI Samples\Scripts\DragMe.cs" />
+    <Compile Include="Assets\Scripts\Dialog\PlayerConversant.cs" />
+    <Compile Include="Assets\Unity UI Samples\Scripts\ShowSliderValue.cs" />
+    <Compile Include="Assets\Unity UI Samples\Scripts\ScrollDetailTexture.cs" />
+    <Compile Include="Assets\Unity UI Samples\Scripts\DropMe.cs" />
     <Compile Include="Assets\Effectors\Effector.cs" />
     <Compile Include="Assets\Effectors\Item.cs" />
-    <Compile Include="Assets\Unity UI Samples\Scripts\DropMe.cs" />
-    <Compile Include="Assets\Unity UI Samples\Scripts\ResizePanel.cs" />
-    <Compile Include="Assets\Unity UI Samples\Scripts\ShowSliderValue.cs" />
     <Compile Include="Assets\Unity UI Samples\Scripts\ChangeColor.cs" />
-    <Compile Include="Assets\Unity UI Samples\Scripts\ActiveStateToggler.cs" />
-    <Compile Include="Assets\Unity UI Samples\Scripts\ScrollDetailTexture.cs" />
-    <Compile Include="Assets\Unity UI Samples\Scripts\PanelManager.cs" />
-    <Compile Include="Assets\Unity UI Samples\Scripts\DragPanel.cs" />
-    <Compile Include="Assets\Unity UI Samples\Scripts\DragMe.cs" />
     <Compile Include="Assets\Unity UI Samples\Scripts\TiltWindow.cs" />
-    <Compile Include="Assets\Unity UI Samples\Scripts\ApplicationManager.cs" />
-    <Compile Include="Assets\Scripts\Dialog\PlayerConversant.cs" />
-    <Compile Include="Assets\Scripts\UI\DialogUI.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

@@ -12,57 +12,47 @@ namespace Nomad.Dialog.Editor
     {
         Dialog selectedDialog = null;
         [NonSerialized]
-        GUIStyle nodeStyle;
-        [NonSerialized]
-        private GUIStyle OuterChoicestyle;
-        [NonSerialized]
-        DialogNode draggedNode = null;
-        [NonSerialized]
-        Vector2 dragOffset;
-        private bool isScrolling;
-        [NonSerialized]
-        private DialogNode creatingNode = null;
-        [NonSerialized]
-        private bool isLinked;
-        //[NonSerialized]
         List<Rect> lastRects = new List<Rect>();
         [NonSerialized]
-        List<Rect> lastEffectorBtnRects = new List<Rect>();
+        GUIStyle nodeStyle, OuterChoicestyle;
         [NonSerialized]
-        private DialogNode nodeToDelete = null;
+        DialogNode draggedNode = null, creatingNode = null, nodeToDelete = null, linkingParentNode = null, linkingChildNode = null;
         [NonSerialized]
-        private DialogNode linkingParentNode = null;
+        Vector2 dragOffset;
+        [NonSerialized]
+        private bool isScrolling;
+        private Vector2 scrollPosition;
+        [NonSerialized]
+        private Vector2 scrollOffset;
+        [NonSerialized]
+        private bool isLinked;
+        [NonSerialized]
         private DialogNode.OuterChoice linkingOuterChoice = null;
-        [NonSerialized]
-        private DialogNode linkingChildNode = null;
         [NonSerialized]
         List<List<Rect>> outerChoiceRect = new List<List<Rect>>();
         [NonSerialized]
         List<List<Rect>> effectorRect = new List<List<Rect>>();
-        private Vector2 scrollPosition;
         [NonSerialized]
-        private Vector2 scrollOffset;
-
         private DialogNode.EffectorsAndEffects effectorToRemove = null;
         [NonSerialized]
-        private int effectorAreaHeight = 85;
+        private int costToRemoveIndex;
         [NonSerialized]
-        private float rootNodeHeightOffset = 150;
-        [NonSerialized]
-        private float nodeHeightOffset = 210;
-        [NonSerialized]
-        private Effector costOrBenefitToRemove = null;
-        [NonSerialized]
-        private int costOrBenefitsHeight = 22;
+        private DialogNode.OuterChoice outerChoiceToRemoveCostFrom = null;
+
+        const int effectorAreaHeight = 105;
+        const float nodeHeightOffset = 180;
+        const int costOrBenefitsHeight = 22;
         const float dialogWindowSize = 4000;
         const float backgroundSize = 50;
+
         [MenuItem("Window/Dialog Editor")]
         public static void ShowEditorWindow()
         {
             GetWindow(typeof(DialogEditor), false, "Dialog Editor");
         }
+
         [OnOpenAsset(1)]
-        public static bool OnOpenAsset(int instanceID, int line)
+        public static bool OnOpenAsset(int instanceID, int line) //when openning an asset, if its of type Dialog, open dialog editor window
         {
             Dialog dialog = EditorUtility.InstanceIDToObject(instanceID) as Dialog;
             if (dialog != null)
@@ -78,31 +68,31 @@ namespace Nomad.Dialog.Editor
             OuterChoicestyle = new GUIStyle();
             StyleNode();
             StyleOuterChoice();
-            if (selectedDialog) SetRectLists();
+            if (selectedDialog) Init();
         }
-        private void StyleNode()
+        private void StyleNode() //style dialog node area
         {
             nodeStyle.normal.background = EditorGUIUtility.Load("node0") as Texture2D;
             nodeStyle.padding = new RectOffset(20, 20, 20, 20);
             nodeStyle.border = new RectOffset(12, 12, 12, 12);
         }
-        private void StyleOuterChoice()
+        private void StyleOuterChoice() //style inner areas
         {
             OuterChoicestyle.normal.background = EditorGUIUtility.Load("node0") as Texture2D;
             OuterChoicestyle.padding = new RectOffset(12, 12, 10, 10);
             OuterChoicestyle.border = new RectOffset(12, 12, 12, 12);
         }
-        private void OnSelectionChange()
+        private void OnSelectionChange() //when you change asset, if its of type Dialog, open it in the dialog editor window, otherwise leave the last one
         {
             Dialog newDialog = Selection.activeObject as Dialog;
             if (newDialog != null)
             {
                 selectedDialog = newDialog;
-                SetRectLists();
+                Init();
                 Repaint();
             }
         }
-        private void SetRectLists()
+        private void Init() //initialize all lists that holds the rects of this dialog
         {
             outerChoiceRect.Clear();
             effectorRect.Clear();
@@ -134,10 +124,7 @@ namespace Nomad.Dialog.Editor
             {
                 ProcessEvents();
                 scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
-                Rect canvas = GUILayoutUtility.GetRect(dialogWindowSize, dialogWindowSize);
-                Rect textCoords = new Rect(0, 0, dialogWindowSize / backgroundSize, dialogWindowSize / backgroundSize);
-                Texture2D background = Resources.Load("background") as Texture2D;
-                GUI.DrawTextureWithTexCoords(canvas, background, textCoords);
+                DrawBackground();
                 int nodeCounter = 0;
                 foreach (DialogNode node in selectedDialog.GetAllNodes())
                 {
@@ -150,49 +137,12 @@ namespace Nomad.Dialog.Editor
                     DrawNode(node, nodeCounter);
                     nodeCounter++;
                 }
-                if (creatingNode != null)
-                {
-                    if (isLinked)
-                    {
-                        selectedDialog.CreateNode(creatingNode);
-                        creatingNode = null;
-                    }
-                    else
-                    {
-                        Undo.RecordObject(creatingNode, "Added unlinked choice");
-                        creatingNode.AddOuterChoice("");
-                        creatingNode.GetOuterChoices().Last().AddInnerChoices();
-                        creatingNode = null;
-                    }
-                }
                 EditorGUILayout.EndScrollView();
-                if (nodeToDelete != null)
-                {
-                    selectedDialog.DeleteNode(nodeToDelete);
-                    nodeToDelete = null;
-                }
-                if (linkingParentNode != null && linkingChildNode != null)
-                {
-                    Undo.RecordObject(selectedDialog, "Linked node");
-                    selectedDialog.LinkNodes(linkingParentNode, linkingChildNode, linkingOuterChoice);
-                    linkingParentNode = null;
-                    linkingChildNode = null;
-                    linkingOuterChoice = null;
-                }
-                if (effectorToRemove != null)
-                {
-                    foreach (DialogNode node in selectedDialog.GetAllNodes())
-                    {
-                        node.RemoveEffector(effectorToRemove);
-                    }
-                }
-                if (costOrBenefitToRemove != null)
-                {
-                    foreach (DialogNode node in selectedDialog.GetAllNodes())
-                    {
-                        node.RemoveCostOrBenefit(costOrBenefitToRemove);
-                    }
-                }
+                CreateAddedNode();
+                DeleteRemovedNode();
+                LinkNodes();
+                RemoveEffector();
+                RemoveCostOrBenefit();
             }
         }
         private void ProcessEvents()
@@ -234,135 +184,20 @@ namespace Nomad.Dialog.Editor
                 isScrolling = false;
             }
         }
-        private void DrawNode(DialogNode node, int index)
+        private static void DrawBackground()
         {
-            float height = node.GetIsRoot() ? rootNodeHeightOffset + GetAllOuterChoicesSize(index) +
-                effectorAreaHeight * node.GetEffectorsCount() : nodeHeightOffset + GetAllOuterChoicesSize(index)
-                + effectorAreaHeight * node.GetEffectorsCount() + costOrBenefitsHeight * node.GetCostOrBenefitCount();
-            node.SetRect(new Rect(node.GetRect().position, new Vector2(node.GetRect().width, height)));
-
-            GUILayout.BeginArea(node.GetRect(), nodeStyle);
-            DrawNodeMenu(node);
-            EditorGUILayout.BeginHorizontal();
-            GUILayout.Label("Speaker:");
-            string newSpeaker = selectedDialog.GetSpeakers().Count != 0 ? selectedDialog.GetSpeakerAtIndex(EditorGUILayout.Popup(selectedDialog.GetSpeakerIndex(node.GetSpeaker()), selectedDialog.GetSpeakers().ToArray())) : "";
-            node.SetSpeaker(newSpeaker);
-            EditorGUILayout.EndHorizontal();
-            string newHeader = node.GetHeader();
-            string buttonName = newHeader != null && newHeader != "" ? newHeader : "Add Choice";
-            GUIStyle buttonStyle = new GUIStyle(GUI.skin.button);
-            buttonStyle.alignment = TextAnchor.UpperLeft;
-            if (GUILayout.Button(buttonName, buttonStyle, GUILayout.ExpandWidth(true), GUILayout.MaxHeight(20)
-                /*GUILayout.MaxWidth()*/))
-            {
-                ChoiceEditor choiceEditor = (ChoiceEditor)GetWindow(typeof(ChoiceEditor), false, "Choice Editor");
-                choiceEditor.maxSize = new Vector2(300, 200);
-                choiceEditor.minSize = new Vector2(300, 200);
-                choiceEditor.Show();
-                choiceEditor.Init(node, newHeader);
-            }
-            GUILayout.Label("Main Choices:");
-            EditorGUILayout.BeginHorizontal();
-            if (GUILayout.Button("Add linked"))
-            {
-                creatingNode = node;
-                isLinked = true;
-                outerChoiceRect.Add(new List<Rect>());
-                outerChoiceRect[index].Add(new Rect());
-            }
-            if (GUILayout.Button("Add unlinked"))
-            {
-                creatingNode = node;
-                isLinked = false;
-                outerChoiceRect.Add(new List<Rect>());
-                outerChoiceRect[index].Add(new Rect());
-            }
-            EditorGUILayout.EndHorizontal();
-            Rect tempRect = GUILayoutUtility.GetLastRect();
-            if (lastRects.Count == index) lastRects.Add(new Rect());
-            if (Event.current.type == EventType.Repaint)
-            {
-                lastRects[index] = tempRect;
-            }
-            int outerChoiceDrawCounter = 0;
-            foreach (DialogNode.OuterChoice outerChoice in node.GetOuterChoices())
-            {
-                if (outerChoiceRect.Count > 0 && outerChoiceRect[index].Count > 0)
-                {
-                    DrawOuterChoice(node, outerChoiceDrawCounter, index);
-                    outerChoiceDrawCounter++;
-                }
-            }
-            GUILayout.Space(node.GetIsRoot() ? GetAllOuterChoicesSize(index) : GetAllOuterChoicesSize(index));
-            GUILayout.Label("Effectors:");
-            if (GUILayout.Button("Add new effector"))
-            {
-                node.AddEffector();
-                effectorRect.Add(new List<Rect>());
-                effectorRect[index].Add(new Rect());
-            }
-            Rect tempRect2 = GUILayoutUtility.GetLastRect();
-            lastEffectorBtnRects.Add(new Rect());
-            if (Event.current.type == EventType.Repaint)
-            {
-                lastEffectorBtnRects[index] = tempRect2;
-            }
-            int effectorIndex = 0;
-            foreach (DialogNode.EffectorsAndEffects effector in node.GetEffectors().ToList())
-            {
-                DrawEffector(node, effectorIndex, index, lastEffectorBtnRects[index]);
-                effectorIndex++;
-            }
-            if (!node.GetIsRoot())
-            {
-                GUILayout.Space(node.GetEffectorsCount() * effectorAreaHeight);
-                GUILayout.Label("Costs/Benefits:");
-                if (GUILayout.Button("Add Cost/Benefit"))
-                {
-                    node.AddCostOrBenefit();
-                }
-                int costOrBenefitIndex = 0;
-
-                foreach (Effector effector in node.GetCostsOrBenefits().ToList())
-                {
-                    DrawCostsAndBenefits(node, costOrBenefitIndex, index);
-                    costOrBenefitIndex++;
-                }
-            }
-            GUILayout.EndArea();
+            Rect canvas = GUILayoutUtility.GetRect(dialogWindowSize, dialogWindowSize);
+            Rect textCoords = new Rect(0, 0, dialogWindowSize / backgroundSize, dialogWindowSize / backgroundSize);
+            Texture2D background = Resources.Load("background") as Texture2D;
+            GUI.DrawTextureWithTexCoords(canvas, background, textCoords);
         }
-
-
-        private void DrawNodeMenu(DialogNode node)
-        {
-            EditorGUILayout.BeginHorizontal();
-            if (linkingParentNode != null && !node.GetIsRoot() && linkingParentNode != node)
-            {
-                if (GUILayout.Button("Connect", GUILayout.ExpandWidth(false)))
-                {
-                    linkingChildNode = node;
-                }
-            }
-            GUILayout.FlexibleSpace();
-            if (!node.GetIsRoot())
-            {
-                if (GUILayout.Button("X", GUILayout.Width(20)))
-                {
-                    if (EditorUtility.DisplayDialog("Remove choice", "This action will delete this choice and all children choices, are you sure?", "OK", "CANCEL"))
-                    {
-                        nodeToDelete = node;
-                    }
-                }
-            }
-            EditorGUILayout.EndHorizontal();
-        }
-
         private void DrawConnections(DialogNode node, int nodeIndex)
         {
             int outerChoiceCounter = 0;
             foreach (DialogNode.OuterChoice outerChoice in node.GetOuterChoices())
             {
                 Vector2 startPosition = new Vector2(node.GetRect().x + outerChoiceRect[nodeIndex][outerChoiceCounter].xMax, node.GetRect().y + outerChoiceRect[nodeIndex][outerChoiceCounter].center.y);
+                if (!node.GetIsVisable()) startPosition.y = node.GetRect().y + 50;
                 if (outerChoice.GetChildUniqueID() != null && outerChoice.GetChildUniqueID() != "")
                 {
                     DialogNode childNode = selectedDialog.GetNodeFromID(outerChoice.GetChildUniqueID());
@@ -381,13 +216,175 @@ namespace Nomad.Dialog.Editor
                 outerChoiceCounter++;
             }
         }
+        private void DrawNode(DialogNode node, int index)
+        {
+            float height = node.GetIsVisable() ? nodeHeightOffset + GetAllOuterChoicesSize(index) + effectorAreaHeight * node.GetEffectorsCount() : 100;
+            node.SetRect(new Rect(node.GetRect().position, new Vector2(node.GetRect().width, height)));
+            GUILayout.BeginArea(node.GetRect(), nodeStyle);
+            DrawNodeMenu(node);
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Label("Speaker:");
+            string newSpeaker = selectedDialog.GetSpeakers().Count != 0 ? selectedDialog.GetSpeakerAtIndex(EditorGUILayout.Popup(selectedDialog.GetSpeakerIndex(node.GetSpeaker()), selectedDialog.GetSpeakers().ToArray())) : "";
+            node.SetSpeaker(newSpeaker);
+            EditorGUILayout.EndHorizontal();
+            string newHeader = node.GetHeader();
+            string buttonName = newHeader != null && newHeader != "" ? newHeader : "Add Choice";
+            GUIStyle buttonStyle = new GUIStyle(GUI.skin.button);
+            buttonStyle.alignment = TextAnchor.UpperLeft;
+            if (GUILayout.Button(buttonName, buttonStyle, GUILayout.ExpandWidth(true), GUILayout.MaxHeight(20)))
+            {
+                ChoiceEditor choiceEditor = (ChoiceEditor)GetWindow(typeof(ChoiceEditor), false, "Choice Editor");
+                choiceEditor.maxSize = new Vector2(300, 200);
+                choiceEditor.minSize = new Vector2(300, 200);
+                choiceEditor.Show();
+                choiceEditor.Init(node, newHeader);
+            }
+            if (node.GetIsVisable())
+            {
+                GUILayout.Label("Main Choices:");
+                EditorGUILayout.BeginHorizontal();
+                if (GUILayout.Button("Add linked"))
+                {
+                    creatingNode = node;
+                    isLinked = true;
+                    outerChoiceRect.Add(new List<Rect>());
+                    outerChoiceRect[index].Add(new Rect());
+                }
+                if (GUILayout.Button("Add unlinked"))
+                {
+                    creatingNode = node;
+                    isLinked = false;
+                    outerChoiceRect.Add(new List<Rect>());
+                    outerChoiceRect[index].Add(new Rect());
+                }
+                EditorGUILayout.EndHorizontal();
+                Rect tempRect = GUILayoutUtility.GetLastRect();
+                if (lastRects.Count == index) lastRects.Add(new Rect());
+                if (Event.current.type == EventType.Repaint)
+                {
+                    lastRects[index] = tempRect;
+                }
+                int outerChoiceDrawCounter = 0;
+                foreach (DialogNode.OuterChoice outerChoice in node.GetOuterChoices())
+                {
+                    if (outerChoiceRect.Count > 0 && outerChoiceRect[index].Count > 0)
+                    {
+                        DrawOuterChoice(node, outerChoiceDrawCounter, index);
+                        outerChoiceDrawCounter++;
+                    }
+                }
+                GUILayout.Space(GetAllOuterChoicesSize(index));
+                GUILayout.Label("Effectors:");
+                if (GUILayout.Button("Add new effector"))
+                {
+                    node.AddEffector();
+                    effectorRect.Add(new List<Rect>());
+                    effectorRect[index].Add(new Rect());
+                }
+
+                int effectorIndex = 0;
+                foreach (DialogNode.EffectorsAndEffects effector in node.GetEffectors().ToList())
+                {
+                    DrawEffector(node, effectorIndex, index);
+                    effectorIndex++;
+                }
+            }
+            GUILayout.EndArea();
+        }
+        private void CreateAddedNode()
+        {
+            if (creatingNode != null)
+            {
+                if (isLinked)
+                {
+                    selectedDialog.CreateNode(creatingNode);
+                    creatingNode = null;
+                }
+                else
+                {
+                    Undo.RecordObject(creatingNode, "Added unlinked choice");
+                    creatingNode.AddOuterChoice("");
+                    creatingNode.GetOuterChoices().Last().AddInnerChoices();
+                    creatingNode = null;
+                }
+            }
+        }
+        private void DeleteRemovedNode()
+        {
+            if (nodeToDelete != null)
+            {
+                selectedDialog.DeleteNode(nodeToDelete);
+                nodeToDelete = null;
+            }
+        }
+        private void LinkNodes()
+        {
+            if (linkingParentNode != null && linkingChildNode != null)
+            {
+                Undo.RecordObject(selectedDialog, "Linked node");
+                selectedDialog.LinkNodes(linkingParentNode, linkingChildNode, linkingOuterChoice);
+                linkingParentNode = null;
+                linkingChildNode = null;
+                linkingOuterChoice = null;
+            }
+        }
+        private void RemoveEffector()
+        {
+            if (effectorToRemove != null)
+            {
+                foreach (DialogNode node in selectedDialog.GetAllNodes())
+                {
+                    node.RemoveEffector(effectorToRemove);
+                }
+                effectorToRemove = null;
+            }
+        }
+        private void RemoveCostOrBenefit()
+        {
+            if (outerChoiceToRemoveCostFrom != null)
+            {
+                outerChoiceToRemoveCostFrom.RemoveCostOrBenefit(costToRemoveIndex);
+                //foreach (DialogNode node in selectedDialog.GetAllNodes())
+                //{
+                //    node.GetOuterChoiceAtIndex(costToRemoveOuterChoiceIndex).RemoveCostOrBenefit(costOrBenefitToRemove);
+                //}
+                outerChoiceToRemoveCostFrom = null;
+            }
+        }
+        private void DrawNodeMenu(DialogNode node)
+        {
+            EditorGUILayout.BeginHorizontal();
+            if (linkingParentNode != null && !node.GetIsRoot() && linkingParentNode != node)
+            {
+                if (GUILayout.Button("Connect", GUILayout.ExpandWidth(false)))
+                {
+                    linkingChildNode = node;
+                }
+            }
+            GUILayout.FlexibleSpace();
+            if (GUILayout.Button("__", GUILayout.Width(20)))
+            {
+                node.IsVisable();
+            }
+            if (!node.GetIsRoot())
+            {
+                if (GUILayout.Button("X", GUILayout.Width(20)))
+                {
+                    if (EditorUtility.DisplayDialog("Remove choice", "This action will delete this choice and all children choices, are you sure?", "OK", "CANCEL"))
+                    {
+                        nodeToDelete = node;
+                    }
+                }
+            }
+            EditorGUILayout.EndHorizontal();
+        }
         private void DrawOuterChoice(DialogNode node, int outerChoiceIndex, int nodeIndex)
         {
             float innerChoiceCount = (node.GetOuterChoiceAtIndex(outerChoiceIndex).GetInnerChoices() == null || !node.GetOuterChoiceVisibility(outerChoiceIndex)) ? 0 : node.GetOuterChoiceAtIndex(outerChoiceIndex).GetInnerChoices().Count();
             outerChoiceRect[nodeIndex][outerChoiceIndex] = new Rect(nodeStyle.border.left,
-                lastRects[outerChoiceIndex].yMax + (node.GetIsRoot() ? 0 : 20) + GetAllPreviousOuterChoicesSize(outerChoiceIndex, nodeIndex),
+                lastRects[outerChoiceIndex].yMax + GetAllPreviousOuterChoicesSize(outerChoiceIndex, nodeIndex),
                 node.GetRect().width - 2 * outerChoiceRect[nodeIndex][outerChoiceIndex].x,
-                45 + innerChoiceCount * 22);
+                45 + innerChoiceCount * 22 + (!node.GetOuterChoiceVisibility(outerChoiceIndex) ? 0 : 40 + costOrBenefitsHeight * node.GetOuterChoiceAtIndex(outerChoiceIndex).GetCostOrBenefitCount()));
             float chanceOfShowing = node.GetOuterChoiceAtIndex(outerChoiceIndex).GetChanceOfShowing();
             Color defaultColor = GUI.backgroundColor;
             GUI.backgroundColor = new Color(2f * (1 - chanceOfShowing), 2f * chanceOfShowing, 0);
@@ -417,6 +414,17 @@ namespace Nomad.Dialog.Editor
                     {
                         DrawInnerChoice(node, outerChoiceIndex, nodeIndex, i);
                     }
+                }
+                GUILayout.Label("Costs/Benefits:");
+                if (GUILayout.Button("Add Cost/Benefit"))
+                {
+                    node.GetOuterChoiceAtIndex(outerChoiceIndex).AddCostOrBenefit();
+                }
+                int costOrBenefitIndex = 0;
+                foreach (DialogNode.CostOrBenefits costOrBenefit in node.GetOuterChoiceAtIndex(outerChoiceIndex).GetCostsOrBenefits().ToList())
+                {
+                    DrawCostsAndBenefits(node, costOrBenefitIndex, outerChoiceIndex);
+                    costOrBenefitIndex++;
                 }
             }
             GUILayout.EndArea();
@@ -478,13 +486,13 @@ namespace Nomad.Dialog.Editor
             }
             EditorGUILayout.EndHorizontal();
         }
-        private void DrawEffector(DialogNode node, int effectorIndex, int nodeIndex, Rect effectorBtnRect)
+        private void DrawEffector(DialogNode node, int effectorIndex, int nodeIndex)
         {
-            float height = node.GetIsRoot() ? GetAllOuterChoicesSize(nodeIndex) + 140 : GetAllOuterChoicesSize(nodeIndex) + 140;
+            float height = GetAllOuterChoicesSize(nodeIndex) + 160;
             effectorRect[nodeIndex][effectorIndex] = new Rect(nodeStyle.border.left,
-                (node.GetIsRoot() ? 0 : 20) + (effectorAreaHeight * effectorIndex) + height,
+                (effectorAreaHeight * effectorIndex) + height,
                 node.GetRect().width - 2 * effectorRect[nodeIndex][effectorIndex].x,
-                effectorAreaHeight) ;
+                effectorAreaHeight);
             GUILayout.BeginArea(effectorRect[nodeIndex][effectorIndex], OuterChoicestyle);
             EditorGUILayout.BeginHorizontal();
             UnityEngine.Object obj = node.GetEffectorAtIndex(effectorIndex).effector;
@@ -494,11 +502,24 @@ namespace Nomad.Dialog.Editor
                 effectorToRemove = node.GetEffectorAtIndex(effectorIndex);
             }
             EditorGUILayout.EndHorizontal();
+            EditorGUILayout.BeginHorizontal();
+            float defaultLabelWidth = EditorGUIUtility.labelWidth;
+            EditorGUIUtility.labelWidth = 120;
+            node.GetEffectorAtIndex(effectorIndex).SetIsAbsolute(EditorGUILayout.Toggle("Is Effect absolut: ", node.GetEffectorAtIndex(effectorIndex).GetIsAbsolute(), GUILayout.MaxWidth(160)));
+            EditorGUIUtility.labelWidth = defaultLabelWidth;
+            GUI.enabled = !node.GetEffectorAtIndex(effectorIndex).GetIsAbsolute();
+            node.GetEffectorAtIndex(effectorIndex).SetEffect(Mathf.Clamp01(EditorGUILayout.FloatField(node.GetEffectorAtIndex(effectorIndex).GetEffect())));
+            GUI.enabled = true;
+            Rect lastRect = GUILayoutUtility.GetLastRect();
+            GUI.Label(lastRect, new GUIContent("", "Effect on the chance of showing (0-1)"));
+
+            EditorGUILayout.EndHorizontal();
             List<string> displayedOptions = new List<string>();
             for (int i = 0; i < node.GetOuterChoicesCount(); i++)
             {
                 displayedOptions.Add("Choice " + (i + 1));
             }
+            displayedOptions.Add("None");
             float defaultWidth = EditorGUIUtility.labelWidth;
             EditorGUIUtility.labelWidth = 60;
             node.GetEffectorAtIndex(effectorIndex).choiceIfFalse = EditorGUILayout.Popup("Positive: ", node.GetEffectorAtIndex(effectorIndex).choiceIfFalse, displayedOptions.ToArray());
@@ -506,18 +527,21 @@ namespace Nomad.Dialog.Editor
             EditorGUIUtility.labelWidth = defaultWidth;
             GUILayout.EndArea();
         }
-        private void DrawCostsAndBenefits(DialogNode node, int costOrBenefitIndex, int nodeIndex)
+        private void DrawCostsAndBenefits(DialogNode node, int costOrBenefitIndex, int outerChoiceIndex)
         {
             EditorGUILayout.BeginHorizontal();
-            UnityEngine.Object obj = node.GetCostOrBenefitAtIndex(costOrBenefitIndex);
-            node.AddCostOrBenefitAtIndex(EditorGUILayout.ObjectField("", obj, typeof(Effector), true, GUILayout.MaxWidth(176)) as Effector, costOrBenefitIndex);
+            UnityEngine.Object obj = node.GetOuterChoiceAtIndex(outerChoiceIndex).GetCostOrBenefitAtIndex(costOrBenefitIndex).costOrBenefit;
+            node.GetOuterChoiceAtIndex(outerChoiceIndex).AddCostOrBenefitAtIndex(EditorGUILayout.ObjectField("", obj, typeof(Effector), true, GUILayout.MaxWidth(119)) as Effector, costOrBenefitIndex);
+            node.GetOuterChoiceAtIndex(outerChoiceIndex).SetCostOrBenefitAmountAtIndex(EditorGUILayout.FloatField(node.GetOuterChoiceAtIndex(outerChoiceIndex).GetCostOrBenefitAmountAtIndex(costOrBenefitIndex), GUILayout.Width(46)), costOrBenefitIndex);
+            Rect lastRect = GUILayoutUtility.GetLastRect();
+            GUI.Label(lastRect, new GUIContent("", "Amount of Cost or Benefit needed"));
             if (GUILayout.Button("-", GUILayout.Width(20)))
             {
-                costOrBenefitToRemove = node.GetCostOrBenefitAtIndex(costOrBenefitIndex);
+                costToRemoveIndex = costOrBenefitIndex;
+                outerChoiceToRemoveCostFrom = node.GetOuterChoiceAtIndex(outerChoiceIndex);
             }
             EditorGUILayout.EndHorizontal();
         }
-
         private float GetAllOuterChoicesSize(int nodeIndex)
         {
             float result = 0;
@@ -536,7 +560,6 @@ namespace Nomad.Dialog.Editor
             {
                 result += outerChoiceRect[nodeIndex][i].height;
             }
-            if (outerChoiceIndex > 0) result -= 20;
             return result;
         }
         private DialogNode GetNodeAtPoint(Vector2 point)

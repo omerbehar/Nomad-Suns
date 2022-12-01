@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -37,6 +38,20 @@ namespace Nomad.Dialog
                 result.Add(outerChoice.GetRandomInnerChoice());
             }
             return result;
+        }
+        public List<string> GetUniqueIDs()
+        {
+            List<string> result = new List<string>();
+            foreach (DialogNode.OuterChoice outerChoice in currentNode.GetOuterChoices())
+            {
+                result.Add(outerChoice.GetChildUniqueID());
+            }
+            return result;
+        }
+
+        public void SetNextNode(string uniqueID)
+        {
+            currentNode = currentDialog.GetNodeFromID(uniqueID);
         }
     }
 }
