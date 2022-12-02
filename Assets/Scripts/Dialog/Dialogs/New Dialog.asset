@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-8419906213956058344
+--- !u!114 &-4732654892320078984
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -10,43 +10,34 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 79c90fa550eee194e8fd7b6a96523858, type: 3}
-  m_Name: 7449fc1c-572d-4292-85e4-40a92f685a68
+  m_Name: 0b2d3b05-171f-41b0-ae75-3f0673a8d8c6
   m_EditorClassIdentifier: 
   isRoot: 1
-  speaker: Farming Guild Member
-  header: Hello there youngling
+  speaker: farmer
+  header: 
   outerChoices:
-  - childUniqueID: 90779d54-0177-426d-be13-66323173c4a0
+  - childUniqueID: 5d9cca44-480d-4e21-b8af-cc6cfc4d7528
     innerChoices:
       innerChoices:
-      - Hey elder
-      - Hey there
-      - well hello there
+      - 
+      - 
     chanceOfShowing: 1
     visibility: 1
     costOrBenefits: []
-  - childUniqueID: 49f2fe9f-96e2-4133-b9b8-7479514224f1
-    innerChoices:
-      innerChoices:
-      - yes what do you want?
-    chanceOfShowing: 1
-    visibility: 1
-    costOrBenefits: []
-  - childUniqueID: 49f2fe9f-96e2-4133-b9b8-7479514224f1
-    innerChoices:
-      innerChoices:
-      - bye...
-    chanceOfShowing: 1
-    visibility: 1
-    costOrBenefits: []
+    rect:
+      serializedVersion: 2
+      x: 12
+      y: 120
+      width: 216
+      height: 129
   effectorsAndEffects: []
   rect:
     serializedVersion: 2
-    x: 105
-    y: -2
+    x: 67
+    y: 69
     width: 240
-    height: 545
---- !u!114 &-7284021543396297290
+    height: 309
+--- !u!114 &-1082917881443429772
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -56,40 +47,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 79c90fa550eee194e8fd7b6a96523858, type: 3}
-  m_Name: 49f2fe9f-96e2-4133-b9b8-7479514224f1
+  m_Name: 5d9cca44-480d-4e21-b8af-cc6cfc4d7528
   m_EditorClassIdentifier: 
   isRoot: 0
-  speaker: Farming Guild Member
-  header: 2
+  speaker: farmer
+  header: 
   outerChoices: []
   effectorsAndEffects: []
   rect:
     serializedVersion: 2
-    x: 481
-    y: 295
-    width: 240
-    height: 180
---- !u!114 &-84112589471367599
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79c90fa550eee194e8fd7b6a96523858, type: 3}
-  m_Name: 90779d54-0177-426d-be13-66323173c4a0
-  m_EditorClassIdentifier: 
-  isRoot: 0
-  speaker: Farming Guild Member
-  header: 1
-  outerChoices: []
-  effectorsAndEffects: []
-  rect:
-    serializedVersion: 2
-    x: 543
-    y: 29
+    x: 367
+    y: 33
     width: 240
     height: 180
 --- !u!114 &11400000
@@ -105,8 +73,7 @@ MonoBehaviour:
   m_Name: New Dialog
   m_EditorClassIdentifier: 
   nodes:
-  - {fileID: -8419906213956058344}
-  - {fileID: -84112589471367599}
-  - {fileID: -7284021543396297290}
+  - {fileID: -4732654892320078984}
+  - {fileID: -1082917881443429772}
   speakers:
-  - Farming Guild Member
+  - farmer

@@ -11,7 +11,7 @@ namespace Nomad.Dialog.Editor
     {
         private string selectedChoice;
         private DialogNode parentNode;
-        private int outerChoiceIndex;
+        private DialogNode.OuterChoice outerChoice;
         private int innerChoiceIndex;
         private bool focused;
 
@@ -38,7 +38,6 @@ namespace Nomad.Dialog.Editor
                 if (GUILayout.Button("Create new choice"))
                 {
                     string newChoice = "";
-                    //newChoice.name = Guid.NewGuid().ToString();
                     selectedChoice = newChoice;
                 }
             }
@@ -54,9 +53,9 @@ namespace Nomad.Dialog.Editor
                     textEditor.cursorIndex = 1;
                     focused = true;
                 }
-                if (outerChoiceIndex != -1)
+                if (outerChoice != null)
                 {
-                    parentNode.GetOuterChoiceAtIndex(outerChoiceIndex).SetInnerChoiceAtIndex(innerChoiceIndex, selectedChoice);
+                    outerChoice.SetInnerChoiceAtIndex(innerChoiceIndex, selectedChoice);
                 }
                 else
                 {
@@ -69,19 +68,18 @@ namespace Nomad.Dialog.Editor
             }
         }
 
-        public void Init(DialogNode node, int outerChoiceIndex, int innerChoiceIndex, string choice)
+        public void Init(DialogNode node, DialogNode.OuterChoice outerChoice, string innerChoice, int innerChoiceIndex)
         {
             parentNode = node;
-            this.outerChoiceIndex = outerChoiceIndex;
+            this.outerChoice = outerChoice;
             this.innerChoiceIndex = innerChoiceIndex;
-            selectedChoice = choice;
+            selectedChoice = innerChoice;
         }
         public void Init(DialogNode node, string header)
         {
             parentNode = node;
             selectedChoice = header;
-            outerChoiceIndex = -1;
-            innerChoiceIndex = -1;
+            //innerChoiceIndex = -1;
         }
     }
 }

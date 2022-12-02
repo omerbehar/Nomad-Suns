@@ -40,7 +40,8 @@ namespace Nomad.Dialog
             public bool visibility = true;
             [SerializeField]
             private List<CostOrBenefits> costOrBenefits = new List<CostOrBenefits>();
-
+            [SerializeField]
+            Rect rect;
             public string GetRandomInnerChoice()
             {
                 return innerChoices.innerChoices[random.Next(innerChoices.innerChoices.Count)];
@@ -121,6 +122,27 @@ namespace Nomad.Dialog
             public void SetCostOrBenefitAmountAtIndex(float newAmount, int costOrBenefitIndex)
             {
                 costOrBenefits[costOrBenefitIndex].amount = newAmount;
+            }
+            public Rect GetOuterChoiceRect()
+            {
+                return rect;
+            }
+            public void SetOuterChoiceRect(Rect newRect)
+            {
+                rect = newRect;
+            }
+            public bool GetIsVisible()
+            {
+                return visibility;
+            }
+            public void InvertVisibility()
+            {
+                visibility = !visibility;
+            }
+
+            public void SetChanceOfShowing(float newChance)
+            {
+                chanceOfShowing = newChance;
             }
         }
         [SerializeField]

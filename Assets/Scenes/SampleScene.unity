@@ -1149,7 +1149,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c248dcfba663db46bbd9067bc5a3744, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentDialog: {fileID: 11400000, guid: 9e8ed9a5c44c49d4c929932e8ba8feda, type: 2}
+  currentDialog: {fileID: 0}
 --- !u!65 &1987833123
 BoxCollider:
   m_ObjectHideFlags: 0
