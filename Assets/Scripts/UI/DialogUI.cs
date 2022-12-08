@@ -4,56 +4,64 @@ using UnityEngine;
 using Nomad.Dialog;
 using TMPro;
 using UnityEngine.UI;
-using System;
+using System.Linq;
 
 namespace Nomad.UI
 {
     public class DialogUI : MonoBehaviour
     {
         PlayerConversant playerConversant;
-        [SerializeField]
-        TextMeshProUGUI speaker;
-        [SerializeField]
-        TextMeshProUGUI AIText;
-        [SerializeField]
-        TextMeshProUGUI[] answers = new TextMeshProUGUI[3];
-        [SerializeField]
-        Button[] answerButtons = new Button[3];
-        //List<string> uniqueIDs = new List<string>(3);
-        //List<string> choices = new List<string>(3);
-        // Start is called before the first frame update
+        [SerializeField] TextMeshProUGUI speaker;
+        [SerializeField] TextMeshProUGUI AIText;
+        [SerializeField] Transform answersRoot;
+        [SerializeField] GameObject answerPrefab;
+        [SerializeField] Button nextBtn;
+        [SerializeField] Button endBtn;
         void Start()
         {
             playerConversant = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerConversant>();
-            AIText.text = playerConversant.GetHeader();
-            speaker.text = playerConversant.GetSpeaker();
-            List<string> choices = playerConversant.GetChoices();
-            List<string> uniqueIDs = playerConversant.GetUniqueIDs();
-            for (int i = 0; i < choices.Count; i++)
-            {
-                answers[i].text = choices[i];
-            }
-            answerButtons[0].onClick.AddListener(() => AnswerSelected(uniqueIDs[0]));
-            answerButtons[1].onClick.AddListener(() => AnswerSelected(uniqueIDs[1]));
-            answerButtons[2].onClick.AddListener(() => AnswerSelected(uniqueIDs[2]));
+            playerConversant.onConversationUpdate += UpadteUI;
+            UpadteUI();
+            endBtn.gameObject.SetActive(false);
+            endBtn.onClick.AddListener(() => ExitDialog());
         }
-
-        private void AnswerSelected(string uniqueID)
+        void Next()
         {
-            playerConversant.SetNextNode(uniqueID);
-            AIText.text = playerConversant.GetHeader();
-            speaker.text = playerConversant.GetSpeaker();
-            List<string> choices = playerConversant.GetChoices();
-            List<string> uniqueIDs = playerConversant.GetUniqueIDs();
-
-            for (int i = 0; i < choices.Count; i++)
-            {
-                answers[i].text = choices[i];
-            }
-            answerButtons[0].onClick.AddListener(() => AnswerSelected(uniqueIDs[0]));
-            answerButtons[1].onClick.AddListener(() => AnswerSelected(uniqueIDs[1]));
-            answerButtons[2].onClick.AddListener(() => AnswerSelected(uniqueIDs[2]));
+            playerConversant.AdvanceNext();
         }
-
+        private void UpadteUI()
+        {
+            answersRoot.gameObject.SetActive(!playerConversant.GetIsNext());
+            nextBtn.gameObject.SetActive(playerConversant.GetIsNext());
+            endBtn.gameObject.SetActive(playerConversant.GetChoices().Count() == 0 && !playerConversant.GetIsNext());
+            AIText.text = playerConversant.GetNpcAnswer();
+            speaker.text = playerConversant.GetSpeaker();
+            if (playerConversant.GetIsNext())
+            {
+                nextBtn.onClick.RemoveAllListeners();
+                nextBtn.onClick.AddListener(() => Next());
+                AIText.text = playerConversant.GetNpcAnswer();
+            }
+            else
+            {
+                foreach (Transform item in answersRoot)
+                {
+                    Destroy(item.gameObject);
+                }
+                foreach (string[] answerAndID in playerConversant.GetChoices())
+                {
+                    GameObject newAnswerObject = Instantiate(answerPrefab, answersRoot);
+                    newAnswerObject.GetComponentInChildren<TextMeshProUGUI>().text = answerAndID[0];
+                    newAnswerObject.GetComponentInChildren<Button>().onClick.AddListener(() =>
+                    {
+                        playerConversant.SetNextNode(answerAndID[1]);
+                    });
+                }
+            }
+        }
+        private void ExitDialog()
+        {
+            this.gameObject.SetActive(false);
+        }
     }
 }

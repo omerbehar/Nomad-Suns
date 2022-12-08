@@ -1,0 +1,214 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-7380194181279642560
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79c90fa550eee194e8fd7b6a96523858, type: 3}
+  m_Name: f9acdcd0-e763-449b-a693-561c3c890dc1
+  m_EditorClassIdentifier: 
+  isRoot: 0
+  speaker: farmer
+  header: hello
+  isNext: 0
+  childUniqueIDIfIsNext: 
+  outerChoices: []
+  effectorsAndEffects: []
+  rect:
+    serializedVersion: 2
+    x: 631
+    y: 148
+    width: 240
+    height: 180
+  npcAnswers:
+  - 
+--- !u!114 &-4732654892320078984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79c90fa550eee194e8fd7b6a96523858, type: 3}
+  m_Name: 0b2d3b05-171f-41b0-ae75-3f0673a8d8c6
+  m_EditorClassIdentifier: 
+  isRoot: 1
+  speaker: farmer
+  header: asdas
+  isNext: 0
+  childUniqueIDIfIsNext: 
+  outerChoices:
+  - childUniqueID: 2f512576-edfb-4a2f-a6a6-fd6a91c82543
+    innerChoices:
+      innerChoices:
+      - 1st
+    chanceOfShowing: 1
+    visibility: 1
+    costOrBenefits: []
+    rect:
+      serializedVersion: 2
+      x: 12
+      y: 120
+      width: 216
+      height: 107
+  - childUniqueID: dbb5888c-2264-40ce-8543-b8e7d9cfa677
+    innerChoices:
+      innerChoices:
+      - next
+    chanceOfShowing: 1
+    visibility: 1
+    costOrBenefits: []
+    rect:
+      serializedVersion: 2
+      x: 12
+      y: 227
+      width: 216
+      height: 107
+  effectorsAndEffects:
+  - effector: {fileID: 0}
+    choiceIfTrue: 0
+    choiceIfFalse: 0
+    isAbsolute: 0
+    effectIfNotAbsolute: 0
+  rect:
+    serializedVersion: 2
+    x: 56
+    y: 116
+    width: 240
+    height: 499
+  npcAnswers:
+  - gggg
+  - asdsad
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 097525fce8ec3d949a9e90cd2cbbda9f, type: 3}
+  m_Name: sheep
+  m_EditorClassIdentifier: 
+  nodes:
+  - {fileID: -4732654892320078984}
+  - {fileID: 1257045327087092963}
+  - {fileID: -7380194181279642560}
+  - {fileID: 9197398214748580498}
+  - {fileID: 3116791254902840671}
+  speakers:
+  - farmer
+  - ssda
+--- !u!114 &1257045327087092963
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79c90fa550eee194e8fd7b6a96523858, type: 3}
+  m_Name: 2f512576-edfb-4a2f-a6a6-fd6a91c82543
+  m_EditorClassIdentifier: 
+  isRoot: 0
+  speaker: farmer
+  header: 1st
+  isNext: 0
+  childUniqueIDIfIsNext: 
+  outerChoices:
+  - childUniqueID: f9acdcd0-e763-449b-a693-561c3c890dc1
+    innerChoices:
+      innerChoices:
+      - 
+    chanceOfShowing: 1
+    visibility: 1
+    costOrBenefits: []
+    rect:
+      serializedVersion: 2
+      x: 12
+      y: 120
+      width: 216
+      height: 107
+  effectorsAndEffects:
+  - effector: {fileID: 0}
+    choiceIfTrue: 0
+    choiceIfFalse: 0
+    isAbsolute: 0
+    effectIfNotAbsolute: 0
+  - effector: {fileID: 0}
+    choiceIfTrue: 0
+    choiceIfFalse: 0
+    isAbsolute: 0
+    effectIfNotAbsolute: 0
+  rect:
+    serializedVersion: 2
+    x: 368
+    y: 112
+    width: 240
+    height: 497
+  npcAnswers:
+  - fsdf  faf adf adf asfdfa sdfadfadsf sadf asd fasdf asdf aSDF ASD FA
+  - asdsa
+--- !u!114 &3116791254902840671
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79c90fa550eee194e8fd7b6a96523858, type: 3}
+  m_Name: 14a93ba6-102b-43ec-b021-72e31cda386c
+  m_EditorClassIdentifier: 
+  isRoot: 0
+  speaker: farmer
+  header: 
+  isNext: 0
+  childUniqueIDIfIsNext: 
+  outerChoices: []
+  effectorsAndEffects: []
+  rect:
+    serializedVersion: 2
+    x: 883
+    y: 17
+    width: 240
+    height: 180
+  npcAnswers:
+  - 
+--- !u!114 &9197398214748580498
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79c90fa550eee194e8fd7b6a96523858, type: 3}
+  m_Name: dbb5888c-2264-40ce-8543-b8e7d9cfa677
+  m_EditorClassIdentifier: 
+  isRoot: 0
+  speaker: farmer
+  header: hekllo
+  isNext: 1
+  childUniqueIDIfIsNext: 14a93ba6-102b-43ec-b021-72e31cda386c
+  outerChoices: []
+  effectorsAndEffects: []
+  rect:
+    serializedVersion: 2
+    x: 629
+    y: -13
+    width: 240
+    height: 140
+  npcAnswers:
+  - 

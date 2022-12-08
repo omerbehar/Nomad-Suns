@@ -10,6 +10,10 @@ namespace Nomad.Dialog
         [SerializeField]
         Dialog currentDialog;
         DialogNode currentNode;
+        [SerializeField]
+        private int npcAnswerIndex = 0;
+
+        public event Action onConversationUpdate;
         private void Awake()
         {
             currentNode = currentDialog.GetRootNode();
@@ -30,28 +34,48 @@ namespace Nomad.Dialog
             }
             return currentNode.GetSpeaker();
         }
-        public List<string> GetChoices()
+        public IEnumerable<string[]> GetChoices()
         {
-            List<string> result = new List<string>();
             foreach (DialogNode.OuterChoice outerChoice in currentNode.GetOuterChoices())
             {
-                result.Add(outerChoice.GetRandomInnerChoice());
+                yield return new string[2] { outerChoice.GetRandomInnerChoice(), outerChoice.GetChildUniqueID() }; 
             }
-            return result;
-        }
-        public List<string> GetUniqueIDs()
-        {
-            List<string> result = new List<string>();
-            foreach (DialogNode.OuterChoice outerChoice in currentNode.GetOuterChoices())
-            {
-                result.Add(outerChoice.GetChildUniqueID());
-            }
-            return result;
         }
 
+        public void AdvanceNext()
+        {
+            npcAnswerIndex++;
+            onConversationUpdate();
+        }
+
+        public string GetNextID()
+        {
+            return currentNode.GetChildUniqueIDIfIsNext();
+        }
+
+        public string GetCurrentNodeID()
+        {
+            return currentNode.name;
+        }
+
+        public string GetNpcAnswer()
+        {
+            return currentNode.GetNpcAnswer(npcAnswerIndex);
+        }
+
+        public bool GetIsNext()
+        {
+            if (currentNode.GetNpcAnswersCount() - 1 > npcAnswerIndex)
+            {
+                return true;
+            }
+            return false;
+        }
         public void SetNextNode(string uniqueID)
         {
             currentNode = currentDialog.GetNodeFromID(uniqueID);
+            npcAnswerIndex = 0;
+            onConversationUpdate();
         }
     }
 }

@@ -51,16 +51,25 @@ namespace Nomad.Dialog
             }
         }
 #if UNITY_EDITOR
-        public void CreateNode(DialogNode parentNode)
+        public void CreateNode(DialogNode parentNode/*, bool isNext*/)
         {
             DialogNode newNode = CreateInstance<DialogNode>();
             newNode.name = Guid.NewGuid().ToString();
             Undo.RegisterCreatedObjectUndo(newNode, "Created dialog node");
             newNode.SetSpeaker(speakers[0]);
+            //newNode.SetIsNext(isNext);
             newNode.SetRect(new Rect(parentNode.GetRect().xMax + 50, parentNode.GetRect().y, newNode.GetRect().size.x, newNode.GetRect().size.y));
             Undo.RecordObject(parentNode, "Adding new node as a child to parent node");
-            parentNode.AddOuterChoice(newNode.name);
-            parentNode.GetOuterChoices().Last().AddInnerChoices();
+            //if (!parentNode.GetIsNext())
+            //{
+                parentNode.AddOuterChoice(newNode.name);
+                parentNode.GetOuterChoices().Last().AddInnerChoices();
+            //}
+            //else
+            //{
+            //    parentNode.SetChildUniqueIDIfIsNext(newNode.name);
+            //    newNode.SetChildUniqueIDIfIsNext("");
+            //}
             Undo.RecordObject(this, "Added dialog node");
             nodes.Add(newNode);
             OnValidate();
@@ -80,7 +89,12 @@ namespace Nomad.Dialog
                         node.RemoveOuterChoice(outerChoice);
                     }
                 }
+                if (nodeToDelete.name == node.GetChildUniqueIDIfIsNext())
+                {
+                    node.SetChildUniqueIDIfIsNext("");
+                }
             }
+            
             Undo.RecordObject(this, "Removed dialog node");
             nodes.Remove(nodeToDelete);
             AssetDatabase.RemoveObjectFromAsset(nodeToDelete);
