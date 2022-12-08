@@ -11,6 +11,7 @@ namespace Nomad.Dialog.Editor
     {
         private string selectedChoice;
         private DialogNode parentNode;
+        private int npcAnswerIndex = 0;
         private DialogNode.OuterChoice outerChoice;
         private int innerChoiceIndex;
         private bool focused;
@@ -59,7 +60,7 @@ namespace Nomad.Dialog.Editor
                 }
                 else
                 {
-                    parentNode.SetHeader(selectedChoice);
+                    parentNode.SetNpcAnswer(npcAnswerIndex, selectedChoice);
                 }
             }
             if (GUILayout.Button("Close window"))
@@ -75,10 +76,11 @@ namespace Nomad.Dialog.Editor
             this.innerChoiceIndex = innerChoiceIndex;
             selectedChoice = innerChoice;
         }
-        public void Init(DialogNode node, string header)
+        public void Init(DialogNode node, int index, string npcAnswer)
         {
             parentNode = node;
-            selectedChoice = header;
+            npcAnswerIndex = index;
+            selectedChoice = npcAnswer;
             //innerChoiceIndex = -1;
         }
     }

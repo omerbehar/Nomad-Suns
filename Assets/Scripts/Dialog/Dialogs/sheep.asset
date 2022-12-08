@@ -1,0 +1,178 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8585013501325346393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79c90fa550eee194e8fd7b6a96523858, type: 3}
+  m_Name: 388963e1-6c7b-4c4f-9922-32e463cfe7de
+  m_EditorClassIdentifier: 
+  isRoot: 0
+  speaker: farmer
+  header: 
+  childUniqueIDIfIsNext: 
+  outerChoices: []
+  rect:
+    serializedVersion: 2
+    x: 792
+    y: 85
+    width: 240
+    height: 126
+  npcAnswers:
+  - 
+--- !u!114 &-4732654892320078984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79c90fa550eee194e8fd7b6a96523858, type: 3}
+  m_Name: 0b2d3b05-171f-41b0-ae75-3f0673a8d8c6
+  m_EditorClassIdentifier: 
+  isRoot: 1
+  speaker: farmer
+  header: asdas
+  childUniqueIDIfIsNext: 
+  outerChoices:
+  - childUniqueID: 2f512576-edfb-4a2f-a6a6-fd6a91c82543
+    innerChoices:
+      innerChoices: []
+    priority: 2
+    visibility: 1
+    effectorsAndEffects: []
+    costOrBenefits: []
+    rect:
+      serializedVersion: 2
+      x: 12
+      y: 115.5
+      width: 216
+      height: 126
+  - childUniqueID: dbb5888c-2264-40ce-8543-b8e7d9cfa677
+    innerChoices:
+      innerChoices:
+      - next
+    priority: 2
+    visibility: 1
+    effectorsAndEffects: []
+    costOrBenefits: []
+    rect:
+      serializedVersion: 2
+      x: 12
+      y: 241.5
+      width: 216
+      height: 147
+  rect:
+    serializedVersion: 2
+    x: 26
+    y: 23
+    width: 240
+    height: 399
+  npcAnswers:
+  - "\u05E9\u05D3\u05D2\u05D3\u05E9\u05DB\u05D2\u05E9"
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 097525fce8ec3d949a9e90cd2cbbda9f, type: 3}
+  m_Name: sheep
+  m_EditorClassIdentifier: 
+  nodes:
+  - {fileID: -4732654892320078984}
+  - {fileID: 1257045327087092963}
+  - {fileID: 9197398214748580498}
+  - {fileID: -8585013501325346393}
+  speakers:
+  - farmer
+  - ssda
+--- !u!114 &1257045327087092963
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79c90fa550eee194e8fd7b6a96523858, type: 3}
+  m_Name: 2f512576-edfb-4a2f-a6a6-fd6a91c82543
+  m_EditorClassIdentifier: 
+  isRoot: 0
+  speaker: farmer
+  header: 1st
+  childUniqueIDIfIsNext: 
+  outerChoices:
+  - childUniqueID: dbb5888c-2264-40ce-8543-b8e7d9cfa677
+    innerChoices:
+      innerChoices:
+      - 
+    priority: 2
+    visibility: 1
+    effectorsAndEffects: []
+    costOrBenefits: []
+    rect:
+      serializedVersion: 2
+      x: 12
+      y: 115.5
+      width: 216
+      height: 147
+  rect:
+    serializedVersion: 2
+    x: 291
+    y: 21
+    width: 240
+    height: 273
+  npcAnswers:
+  - 
+--- !u!114 &9197398214748580498
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79c90fa550eee194e8fd7b6a96523858, type: 3}
+  m_Name: dbb5888c-2264-40ce-8543-b8e7d9cfa677
+  m_EditorClassIdentifier: 
+  isRoot: 0
+  speaker: farmer
+  header: hekllo
+  childUniqueIDIfIsNext: 
+  outerChoices:
+  - childUniqueID: 388963e1-6c7b-4c4f-9922-32e463cfe7de
+    innerChoices:
+      innerChoices:
+      - 
+    priority: 2
+    visibility: 1
+    effectorsAndEffects: []
+    costOrBenefits: []
+    rect:
+      serializedVersion: 2
+      x: 12
+      y: 136.5
+      width: 216
+      height: 147
+  rect:
+    serializedVersion: 2
+    x: 556
+    y: 13
+    width: 240
+    height: 294
+  npcAnswers:
+  - 
+  - 

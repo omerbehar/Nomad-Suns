@@ -17,6 +17,10 @@ namespace Nomad.Dialog
         string speaker = "";
         [SerializeField]
         private string header;
+        //[SerializeField]
+        //private bool isNext;
+        [SerializeField]
+        private string childUniqueIDIfIsNext;
         [Serializable]
         public class InnerChoices
         {
@@ -36,15 +40,29 @@ namespace Nomad.Dialog
             [SerializeField]
             public InnerChoices innerChoices = new InnerChoices();
             [SerializeField]
-            public float chanceOfShowing = 1f;
+            public int priority = 2;
             public bool visibility = true;
+            [SerializeField]
+            List<EffectorsAndEffects> effectorsAndEffects = new List<EffectorsAndEffects>();
             [SerializeField]
             private List<CostOrBenefits> costOrBenefits = new List<CostOrBenefits>();
             [SerializeField]
             Rect rect;
             public string GetRandomInnerChoice()
             {
-                return innerChoices.innerChoices[random.Next(innerChoices.innerChoices.Count)];
+                string result = "no inner choices";
+                if (innerChoices.innerChoices != null && innerChoices.innerChoices.Count > 0)
+                {
+                    foreach(string choice in innerChoices.innerChoices)
+                    {
+                        if (choice == "")
+                        {
+                            return "atleset one of your inner choices is empty";
+                        }
+                    }
+                    result = innerChoices.innerChoices[random.Next(innerChoices.innerChoices.Count)];
+                }
+                return result;
             }
             public void AddInnerChoices()
             {
@@ -75,9 +93,9 @@ namespace Nomad.Dialog
             {
                 innerChoices.innerChoices.Add(null);
             }
-            public float GetChanceOfShowing()
+            public int GetPriority()
             {
-                return chanceOfShowing;
+                return priority;
             }
             public string GetChildUniqueID()
             {
@@ -86,6 +104,31 @@ namespace Nomad.Dialog
             public void SetChildUniqueId(string newID)
             {
                 childUniqueID = newID;
+            }
+            public void AddEffector()
+            {
+                effectorsAndEffects.Add(new EffectorsAndEffects
+                {
+                    effector = null,
+                    amount = 0,
+                    relation = 1
+                });
+            }
+            public IEnumerable<EffectorsAndEffects> GetEffectors()
+            {
+                return effectorsAndEffects;
+            }
+            public int GetEffectorsCount()
+            {
+                return effectorsAndEffects.Count;
+            }
+            public void RemoveEffector(EffectorsAndEffects effector)
+            {
+                effectorsAndEffects.Remove(effector);
+            }
+            public void AddEffectorAtIndex(Effector effector, int effectorIndex)
+            {
+                effectorsAndEffects[effectorIndex].effector = effector;
             }
             public void AddCostOrBenefit()
             {
@@ -140,49 +183,75 @@ namespace Nomad.Dialog
                 visibility = !visibility;
             }
 
-            public void SetChanceOfShowing(float newChance)
+            public void SetPriority(int newPriotiy)
             {
-                chanceOfShowing = newChance;
+                priority = newPriotiy;
             }
         }
+
+        public string GetNpcAnswer(int npcAnswerIndex)
+        {
+            return npcAnswers[npcAnswerIndex];
+        }
+
+        public void SetNpcAnswer(int npcAnswerIndex, string selectedChoice)
+        {
+            npcAnswers[npcAnswerIndex] = selectedChoice;
+        }
+
         [SerializeField]
         private List<OuterChoice> outerChoices = new List<OuterChoice>();
         [Serializable]
         public class EffectorsAndEffects
         {
             public Effector effector;
-            public int choiceIfTrue;
-            public int choiceIfFalse;
-            public bool isAbsolute;
-            public float effectIfNotAbsolute;
-            public bool GetIsAbsolute()
+            public float amount;
+            public int relation;
+            public float GetAmount()
             {
-                return isAbsolute;
+                return amount;
             }
-            public void SetIsAbsolute(bool v)
+            public void SetAmount(float newAmount)
             {
-                isAbsolute = v;
+                amount = newAmount;
             }
-            public float GetEffect()
+            public int GetRelation()
             {
-                return effectIfNotAbsolute;
+                return relation;
             }
-            public void SetEffect(float newEffect)
+            public void SetRelation(int newRelation)
             {
-                effectIfNotAbsolute = newEffect;
+                relation = newRelation;
             }
+            //public int choiceIfTrue;
+            //public int choiceIfFalse;
+            //public bool isAbsolute;
+            //public float effectIfNotAbsolute;
+            //public bool GetIsAbsolute()
+            //{
+            //    return isAbsolute;
+            //}
+            //public void SetIsAbsolute(bool v)
+            //{
+            //    isAbsolute = v;
+            //}
+            //public float GetEffect()
+            //{
+            //    return effectIfNotAbsolute;
+            //}
+            //public void SetEffect(float newEffect)
+            //{
+            //    effectIfNotAbsolute = newEffect;
+            //}
         }
-        [SerializeField]
-        List<EffectorsAndEffects> effectorsAndEffects = new List<EffectorsAndEffects>();
+        
         [SerializeField]
         private Rect rect = new Rect(0, 0, 240, 800);
         private bool isVisable = true;
+        [SerializeField]
+        private List<string> npcAnswers = new List<string>();
 
-        public void SetChanceOfShowing(int index, float chance)
-        {
-            Undo.RecordObject(this, "Update chance of outer choice showing");
-            outerChoices[index].chanceOfShowing = chance;
-        }
+
         public void IsRoot(bool v)
         {
             isRoot = v;
@@ -233,52 +302,28 @@ namespace Nomad.Dialog
         {
             return isRoot;
         }
-        public void InvertOuterChoiceVisability(int outerChoiceIndex)
-        {
-            outerChoices[outerChoiceIndex].visibility = !outerChoices[outerChoiceIndex].visibility;
-        }
-        public bool GetOuterChoiceVisibility(int outerChoiceIndex)
-        {
-            return outerChoices[outerChoiceIndex].visibility;
-        }
+        //public void InvertOuterChoiceVisability(int outerChoiceIndex)
+        //{
+        //    outerChoices[outerChoiceIndex].visibility = !outerChoices[outerChoiceIndex].visibility;
+        //}
+        //public bool GetOuterChoiceVisibility(int outerChoiceIndex)
+        //{
+        //    return outerChoices[outerChoiceIndex].visibility;
+        //}
         public int GetOuterChoicesCount()
         {
             return outerChoices.Count;
         }
-        public void AddEffector()
-        {
-            effectorsAndEffects.Add(new EffectorsAndEffects
-            {
-                effector = null,
-                choiceIfFalse = 0,
-                choiceIfTrue = 0
-            });
-        }
-        public IEnumerable<EffectorsAndEffects> GetEffectors()
-        {
-            return effectorsAndEffects;
-        }
-        public void RemoveEffectorAtIndex(int index)
-        {
-            Undo.RecordObject(this, "Remove effector");
-            effectorsAndEffects.RemoveAt(index);
-        }
-        public EffectorsAndEffects GetEffectorAtIndex(int index)
-        {
-            return effectorsAndEffects[index];
-        }
-        public int GetEffectorsCount()
-        {
-            return effectorsAndEffects.Count;
-        }
-        public void RemoveEffector(EffectorsAndEffects effector)
-        {
-            effectorsAndEffects.Remove(effector);
-        }
-        public void AddEffectorAtIndex(Effector effector, int effectorIndex)
-        {
-            effectorsAndEffects[effectorIndex].effector = effector;
-        }
+        //public void RemoveEffectorAtIndex(int index)
+        //{
+        //    Undo.RecordObject(this, "Remove effector");
+        //    effectorsAndEffects.RemoveAt(index);
+        //}
+        //public EffectorsAndEffects GetEffectorAtIndex(int index)
+        //{
+        //    return effectorsAndEffects[index];
+        //}
+        
         public void SetSpeaker(string newSpeaker)
         {
             speaker = newSpeaker;
@@ -292,10 +337,49 @@ namespace Nomad.Dialog
         {
             isVisable = !isVisable;
         }
+        public void IsVisable(bool v)
+        {
+            isVisable = v;
+        }
 
         public bool GetIsVisable()
         {
             return isVisable;
+        }
+        //public bool GetIsNext()
+        //{
+        //    return isNext;
+        //}
+
+        public void AddNpcAnswer()
+        {
+            npcAnswers.Add("");
+        }
+        public int GetNpcAnswersCount()
+        {
+            return npcAnswers.Count;
+        }
+        public IEnumerable<string> GetNpcAnswers()
+        {
+            return npcAnswers;
+        }
+
+        //public void SetIsNext(bool isNext)
+        //{
+        //    this.isNext = isNext;
+        //}
+        public string GetChildUniqueIDIfIsNext()
+        {
+            return childUniqueIDIfIsNext;
+        }
+        public void SetChildUniqueIDIfIsNext(string uniqueID)
+        {
+            childUniqueIDIfIsNext = uniqueID;
+        }
+
+        public void RemoveNpcAnswer(int npcAnswerIndex)
+        {
+            npcAnswers.RemoveAt(npcAnswerIndex);
         }
     }
 }
