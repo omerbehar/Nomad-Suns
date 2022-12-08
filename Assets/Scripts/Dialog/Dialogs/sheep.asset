@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-7380194181279642560
+--- !u!114 &-8585013501325346393
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -10,21 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 79c90fa550eee194e8fd7b6a96523858, type: 3}
-  m_Name: f9acdcd0-e763-449b-a693-561c3c890dc1
+  m_Name: 388963e1-6c7b-4c4f-9922-32e463cfe7de
   m_EditorClassIdentifier: 
   isRoot: 0
   speaker: farmer
-  header: hello
-  isNext: 0
+  header: 
   childUniqueIDIfIsNext: 
   outerChoices: []
-  effectorsAndEffects: []
   rect:
     serializedVersion: 2
-    x: 631
-    y: 148
+    x: 792
+    y: 85
     width: 240
-    height: 180
+    height: 126
   npcAnswers:
   - 
 --- !u!114 &-4732654892320078984
@@ -42,50 +40,43 @@ MonoBehaviour:
   isRoot: 1
   speaker: farmer
   header: asdas
-  isNext: 0
   childUniqueIDIfIsNext: 
   outerChoices:
   - childUniqueID: 2f512576-edfb-4a2f-a6a6-fd6a91c82543
     innerChoices:
-      innerChoices:
-      - 1st
-    chanceOfShowing: 1
+      innerChoices: []
+    priority: 2
     visibility: 1
+    effectorsAndEffects: []
     costOrBenefits: []
     rect:
       serializedVersion: 2
       x: 12
-      y: 120
+      y: 115.5
       width: 216
-      height: 107
+      height: 126
   - childUniqueID: dbb5888c-2264-40ce-8543-b8e7d9cfa677
     innerChoices:
       innerChoices:
       - next
-    chanceOfShowing: 1
+    priority: 2
     visibility: 1
+    effectorsAndEffects: []
     costOrBenefits: []
     rect:
       serializedVersion: 2
       x: 12
-      y: 227
+      y: 241.5
       width: 216
-      height: 107
-  effectorsAndEffects:
-  - effector: {fileID: 0}
-    choiceIfTrue: 0
-    choiceIfFalse: 0
-    isAbsolute: 0
-    effectIfNotAbsolute: 0
+      height: 147
   rect:
     serializedVersion: 2
-    x: 56
-    y: 116
+    x: 26
+    y: 23
     width: 240
-    height: 499
+    height: 399
   npcAnswers:
-  - gggg
-  - asdsad
+  - "\u05E9\u05D3\u05D2\u05D3\u05E9\u05DB\u05D2\u05E9"
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -101,9 +92,8 @@ MonoBehaviour:
   nodes:
   - {fileID: -4732654892320078984}
   - {fileID: 1257045327087092963}
-  - {fileID: -7380194181279642560}
   - {fileID: 9197398214748580498}
-  - {fileID: 3116791254902840671}
+  - {fileID: -8585013501325346393}
   speakers:
   - farmer
   - ssda
@@ -122,67 +112,28 @@ MonoBehaviour:
   isRoot: 0
   speaker: farmer
   header: 1st
-  isNext: 0
   childUniqueIDIfIsNext: 
   outerChoices:
-  - childUniqueID: f9acdcd0-e763-449b-a693-561c3c890dc1
+  - childUniqueID: dbb5888c-2264-40ce-8543-b8e7d9cfa677
     innerChoices:
       innerChoices:
       - 
-    chanceOfShowing: 1
+    priority: 2
     visibility: 1
+    effectorsAndEffects: []
     costOrBenefits: []
     rect:
       serializedVersion: 2
       x: 12
-      y: 120
+      y: 115.5
       width: 216
-      height: 107
-  effectorsAndEffects:
-  - effector: {fileID: 0}
-    choiceIfTrue: 0
-    choiceIfFalse: 0
-    isAbsolute: 0
-    effectIfNotAbsolute: 0
-  - effector: {fileID: 0}
-    choiceIfTrue: 0
-    choiceIfFalse: 0
-    isAbsolute: 0
-    effectIfNotAbsolute: 0
+      height: 147
   rect:
     serializedVersion: 2
-    x: 368
-    y: 112
+    x: 291
+    y: 21
     width: 240
-    height: 497
-  npcAnswers:
-  - fsdf  faf adf adf asfdfa sdfadfadsf sadf asd fasdf asdf aSDF ASD FA
-  - asdsa
---- !u!114 &3116791254902840671
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79c90fa550eee194e8fd7b6a96523858, type: 3}
-  m_Name: 14a93ba6-102b-43ec-b021-72e31cda386c
-  m_EditorClassIdentifier: 
-  isRoot: 0
-  speaker: farmer
-  header: 
-  isNext: 0
-  childUniqueIDIfIsNext: 
-  outerChoices: []
-  effectorsAndEffects: []
-  rect:
-    serializedVersion: 2
-    x: 883
-    y: 17
-    width: 240
-    height: 180
+    height: 273
   npcAnswers:
   - 
 --- !u!114 &9197398214748580498
@@ -200,15 +151,28 @@ MonoBehaviour:
   isRoot: 0
   speaker: farmer
   header: hekllo
-  isNext: 1
-  childUniqueIDIfIsNext: 14a93ba6-102b-43ec-b021-72e31cda386c
-  outerChoices: []
-  effectorsAndEffects: []
+  childUniqueIDIfIsNext: 
+  outerChoices:
+  - childUniqueID: 388963e1-6c7b-4c4f-9922-32e463cfe7de
+    innerChoices:
+      innerChoices:
+      - 
+    priority: 2
+    visibility: 1
+    effectorsAndEffects: []
+    costOrBenefits: []
+    rect:
+      serializedVersion: 2
+      x: 12
+      y: 136.5
+      width: 216
+      height: 147
   rect:
     serializedVersion: 2
-    x: 629
-    y: -13
+    x: 556
+    y: 13
     width: 240
-    height: 140
+    height: 294
   npcAnswers:
+  - 
   - 
