@@ -75,31 +75,53 @@
     <Compile Include="Assets\Effectors\Item.cs" />
     <Compile Include="Assets\Unity UI Samples\Scripts\ChangeColor.cs" />
     <Compile Include="Assets\Unity UI Samples\Scripts\TiltWindow.cs" />
+    <Compile Include="Assets\Scripts\Dialog\AIENG.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Packages\System.Runtime.CompilerServices.Unsafe.4.5.3\LICENSE.TXT" />
+    <None Include="Assets\Packages\Microsoft.Bcl.AsyncInterfaces.1.1.1\LICENSE.TXT" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
+    <None Include="Assets\Packages\Microsoft.Bcl.AsyncInterfaces.1.1.1\useSharedDesignerContext.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
+    <None Include="Assets\Packages\System.Threading.Tasks.Extensions.4.5.4\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro_Mobile.cginc" />
     <None Include="Assets\Unity UI Samples\Textures and Sprites\SF UI\Background\LICENSE.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF SSD.shader" />
+    <None Include="Assets\Packages\System.Runtime.CompilerServices.Unsafe.4.5.3\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.xml" />
+    <None Include="Assets\Packages\System.Runtime.CompilerServices.Unsafe.4.5.3\useSharedDesignerContext.txt" />
     <None Include="Assets\Unity UI Samples\Materials\UI-Default-No-Alpha.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader" />
+    <None Include="Assets\Packages\System.Threading.Tasks.Extensions.4.5.4\THIRD-PARTY-NOTICES.TXT" />
+    <None Include="Assets\Packages\Microsoft.Bcl.AsyncInterfaces.1.1.1\lib\netstandard2.0\Microsoft.Bcl.AsyncInterfaces.dll" />
+    <None Include="Assets\Packages\System.Threading.Tasks.Extensions.4.5.4\version.txt" />
+    <None Include="Assets\Packages\System.Runtime.CompilerServices.Unsafe.4.5.3\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll" />
+    <None Include="Assets\Packages\OpenAI.1.2.0\lib\netstandard2.0\OpenAI_API.dll" />
+    <None Include="Assets\Packages\Newtonsoft.Json.12.0.3\lib\netstandard2.0\Newtonsoft.Json.xml" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface.shader" />
+    <None Include="Assets\Packages\System.Threading.Tasks.Extensions.4.5.4\useSharedDesignerContext.txt" />
     <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Custom-Atlas.shader" />
+    <None Include="Assets\Packages\Microsoft.Bcl.AsyncInterfaces.1.1.1\lib\netstandard2.0\Microsoft.Bcl.AsyncInterfaces.xml" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF.shader" />
+    <None Include="Assets\Packages\System.Threading.Tasks.Extensions.4.5.4\LICENSE.TXT" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile SSD.shader" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro_Properties.cginc" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro_Surface.cginc" />
+    <None Include="Assets\Packages\System.Runtime.CompilerServices.Unsafe.4.5.3\THIRD-PARTY-NOTICES.TXT" />
     <None Include="Assets\Unity UI Samples\Fonts\Jupiter\LICENSE.txt" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
+    <None Include="Assets\Packages\Newtonsoft.Json.12.0.3\lib\netstandard2.0\Newtonsoft.Json.dll" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader" />
+    <None Include="Assets\Packages\Microsoft.Bcl.AsyncInterfaces.1.1.1\THIRD-PARTY-NOTICES.TXT" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF Overlay.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader" />
+    <None Include="Assets\Packages\System.Threading.Tasks.Extensions.4.5.4\lib\netstandard2.0\System.Threading.Tasks.Extensions.xml" />
+    <None Include="Assets\Packages\Microsoft.Bcl.AsyncInterfaces.1.1.1\version.txt" />
     <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile.shader" />
+    <None Include="Assets\Packages\System.Runtime.CompilerServices.Unsafe.4.5.3\version.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Sprite.shader" />
   </ItemGroup>
   <ItemGroup>
@@ -324,6 +346,21 @@
     </Reference>
     <Reference Include="UnityEditor.UnityConnectModule">
       <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.30f1\Editor\Data\Managed\UnityEngine\UnityEditor.UnityConnectModule.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe">
+      <HintPath>Assets\Packages\System.Runtime.CompilerServices.Unsafe.4.5.3\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions">
+      <HintPath>Assets\Packages\System.Threading.Tasks.Extensions.4.5.4\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces">
+      <HintPath>Assets\Packages\Microsoft.Bcl.AsyncInterfaces.1.1.1\lib\netstandard2.0\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>Assets\Packages\Newtonsoft.Json.12.0.3\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenAI_API">
+      <HintPath>Assets\Packages\OpenAI.1.2.0\lib\netstandard2.0\OpenAI_API.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.iOS.Extensions.Xcode">
       <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.30f1\Editor\Data\PlaybackEngines\iOSSupport\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>

@@ -89,9 +89,9 @@ namespace Nomad.Dialog
             {
                 innerChoices.innerChoices.RemoveAt(i);
             }
-            public void AddInnerChoice()
+            public void AddInnerChoice(string choice)
             {
-                innerChoices.innerChoices.Add(null);
+                innerChoices.innerChoices.Add(choice);
             }
             public int GetPriority()
             {

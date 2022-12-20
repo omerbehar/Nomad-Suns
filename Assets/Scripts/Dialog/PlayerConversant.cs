@@ -41,7 +41,13 @@ namespace Nomad.Dialog
                 yield return new string[2] { outerChoice.GetRandomInnerChoice(), outerChoice.GetChildUniqueID() }; 
             }
         }
-
+        public IEnumerable<string> GetAIChoices()
+        {
+            foreach (string choice in AIENG.choices)
+            {
+                yield return choice;
+            }
+        }
         public void AdvanceNext()
         {
             npcAnswerIndex++;

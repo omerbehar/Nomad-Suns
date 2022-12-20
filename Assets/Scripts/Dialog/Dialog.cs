@@ -74,6 +74,30 @@ namespace Nomad.Dialog
             nodes.Add(newNode);
             OnValidate();
         }
+
+        public void EditRootNode(/*string speaker,*/ string npcLine, List<string> choices)
+        {
+            foreach (DialogNode node in GetAllNodes())
+            {
+                if (node.GetIsRoot())
+                {
+                    Debug.Log(npcLine + " " + choices.Count);
+                    //node.SetSpeaker(speaker);
+                    //node.AddNpcAnswer();
+                    //node.SetNpcAnswer(0, npcLine);
+                    int choiceIndex = 0;
+                    foreach (string choice in choices)
+                    {
+                        node.AddOuterChoice("");
+                        node.GetOuterChoiceAtIndex(choiceIndex).AddInnerChoices();
+                        node.GetOuterChoiceAtIndex(choiceIndex).AddInnerChoice(choice);
+                        choiceIndex++;
+                        AssetDatabase.SaveAssets();
+                    }
+                }
+            }
+        }
+
         public void DeleteNode(DialogNode nodeToDelete)
         {
             foreach (DialogNode.OuterChoice outerchoice in nodeToDelete.GetOuterChoices().ToList())
@@ -126,7 +150,10 @@ namespace Nomad.Dialog
                 {
                     if (AssetDatabase.GetAssetPath(node) == "")
                     {
-                        AssetDatabase.AddObjectToAsset(node, this);
+                        if (node != null)
+                        {
+                            AssetDatabase.AddObjectToAsset(node, this);
+                        }
                     }
                 }
             }

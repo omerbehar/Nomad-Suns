@@ -429,7 +429,7 @@ namespace Nomad.Dialog.Editor
             DrawLinkingButton(node, outerChoice);
             if (GUILayout.Button("+", GUILayout.Width(20), GUILayout.ExpandWidth(false)))
             {
-                outerChoice.AddInnerChoice();
+                outerChoice.AddInnerChoice(null);
             }
             GUILayout.EndHorizontal();
             GUILayout.Space(5);
